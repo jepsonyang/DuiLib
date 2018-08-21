@@ -275,7 +275,7 @@ void CWindowWnd::Unsubclass()
     m_bSubclassed = false;
 }
 
-void CWindowWnd::ShowWindow(bool bShow /*= true*/, bool bTakeFocus /*= false*/)
+void CWindowWnd::ShowWindow(bool bShow /*= true*/, bool bTakeFocus /*= true*/)
 {
     ASSERT(::IsWindow(m_hWnd));
     if( !::IsWindow(m_hWnd) ) return;

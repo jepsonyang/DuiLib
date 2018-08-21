@@ -1,42 +1,38 @@
 #include "C360SafeFrameWnd.h"
 #include "ControlEx.h"
 
-C360SafeFrameWnd::C360SafeFrameWnd()
-{
-
-}
-
 LPCTSTR C360SafeFrameWnd::GetWindowClassName() const
 {
 	return _T("UIMainFrame");
 }
 
-UINT C360SafeFrameWnd::GetClassStyle() const
+LRESULT C360SafeFrameWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	return CS_DBLCLKS;
-}
-
-void C360SafeFrameWnd::OnFinalMessage(HWND /*hWnd*/)
-{
-	delete this;
-}
-
-void C360SafeFrameWnd::Init()
-{
-	m_pCloseBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("closebtn")));
-	m_pMaxBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("maxbtn")));
-	m_pRestoreBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("restorebtn")));
-	m_pMinBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("minbtn")));
-}
-
-void C360SafeFrameWnd::OnPrepare()
-{
-
+	LRESULT lRes = 0;
+	BOOL bHandled = TRUE;
+	switch (uMsg) {
+	case WM_CREATE:        lRes = _OnCreate(uMsg, wParam, lParam, bHandled); break;
+	case WM_CLOSE:         lRes = _OnClose(uMsg, wParam, lParam, bHandled); break;
+	case WM_DESTROY:       lRes = _OnDestroy(uMsg, wParam, lParam, bHandled); break;
+	case WM_NCACTIVATE:    lRes = _OnNcActivate(uMsg, wParam, lParam, bHandled); break;
+	case WM_NCCALCSIZE:    lRes = _OnNcCalcSize(uMsg, wParam, lParam, bHandled); break;
+	case WM_NCPAINT:       lRes = _OnNcPaint(uMsg, wParam, lParam, bHandled); break;
+	case WM_NCHITTEST:     lRes = _OnNcHitTest(uMsg, wParam, lParam, bHandled); break;
+	case WM_SIZE:          lRes = _OnSize(uMsg, wParam, lParam, bHandled); break;
+	case WM_GETMINMAXINFO: lRes = _OnGetMinMaxInfo(uMsg, wParam, lParam, bHandled); break;
+	case WM_SYSCOMMAND:    lRes = _OnSysCommand(uMsg, wParam, lParam, bHandled); break;
+	default: bHandled = FALSE;
+	}
+	if (bHandled) return lRes;
+	if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;
+	return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
 }
 
 void C360SafeFrameWnd::Notify(TNotifyUI& msg)
 {
-	if (msg.sType == _T("windowinit")) OnPrepare();
+	if (msg.sType == _T("windowinit")) {
+		_OnPrepare();
+	}
 	else if (msg.sType == _T("click")) {
 		if (msg.pSender == m_pCloseBtn) {
 			PostQuitMessage(0);
@@ -75,7 +71,7 @@ void C360SafeFrameWnd::Notify(TNotifyUI& msg)
 	}
 }
 
-LRESULT C360SafeFrameWnd::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	LONG styleValue = ::GetWindowLong(*this, GWL_STYLE);
 	styleValue &= ~WS_CAPTION;
@@ -89,17 +85,17 @@ LRESULT C360SafeFrameWnd::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL
 	m_pm.AttachDialog(pRoot);
 	m_pm.AddNotifier(this);
 
-	Init();
+	_Init();
 	return 0;
 }
 
-LRESULT C360SafeFrameWnd::OnClose(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnClose(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	bHandled = FALSE;
 	return 0;
 }
 
-LRESULT C360SafeFrameWnd::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	::PostQuitMessage(0L);
 
@@ -107,23 +103,23 @@ LRESULT C360SafeFrameWnd::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 	return 0;
 }
 
-LRESULT C360SafeFrameWnd::OnNcActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnNcActivate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	if (::IsIconic(*this)) bHandled = FALSE;
 	return (wParam == 0) ? TRUE : FALSE;
 }
 
-LRESULT C360SafeFrameWnd::OnNcCalcSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnNcCalcSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	return 0;
 }
 
-LRESULT C360SafeFrameWnd::OnNcPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnNcPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	return 0;
 }
 
-LRESULT C360SafeFrameWnd::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	POINT pt; pt.x = GET_X_LPARAM(lParam); pt.y = GET_Y_LPARAM(lParam);
 	::ScreenToClient(*this, &pt);
@@ -160,7 +156,7 @@ LRESULT C360SafeFrameWnd::OnNcHitTest(UINT uMsg, WPARAM wParam, LPARAM lParam, B
 	return HTCLIENT;
 }
 
-LRESULT C360SafeFrameWnd::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	SIZE szRoundCorner = m_pm.GetRoundCorner();
 	if (!::IsIconic(*this) && (szRoundCorner.cx != 0 || szRoundCorner.cy != 0)) {
@@ -177,7 +173,7 @@ LRESULT C360SafeFrameWnd::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 	return 0;
 }
 
-LRESULT C360SafeFrameWnd::OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	MONITORINFO oMonitor = {};
 	oMonitor.cbSize = sizeof(oMonitor);
@@ -195,7 +191,7 @@ LRESULT C360SafeFrameWnd::OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lPara
 	return 0;
 }
 
-LRESULT C360SafeFrameWnd::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT C360SafeFrameWnd::_OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
 	// 有时会在收到WM_NCDESTROY后收到wParam为SC_CLOSE的WM_SYSCOMMAND
 	if (wParam == SC_CLOSE) {
@@ -222,25 +218,15 @@ LRESULT C360SafeFrameWnd::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	return lRes;
 }
 
-LRESULT C360SafeFrameWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
+void C360SafeFrameWnd::_Init()
 {
-	LRESULT lRes = 0;
-	BOOL bHandled = TRUE;
-	switch (uMsg) {
-	case WM_CREATE:        lRes = OnCreate(uMsg, wParam, lParam, bHandled); break;
-	case WM_CLOSE:         lRes = OnClose(uMsg, wParam, lParam, bHandled); break;
-	case WM_DESTROY:       lRes = OnDestroy(uMsg, wParam, lParam, bHandled); break;
-	case WM_NCACTIVATE:    lRes = OnNcActivate(uMsg, wParam, lParam, bHandled); break;
-	case WM_NCCALCSIZE:    lRes = OnNcCalcSize(uMsg, wParam, lParam, bHandled); break;
-	case WM_NCPAINT:       lRes = OnNcPaint(uMsg, wParam, lParam, bHandled); break;
-	case WM_NCHITTEST:     lRes = OnNcHitTest(uMsg, wParam, lParam, bHandled); break;
-	case WM_SIZE:          lRes = OnSize(uMsg, wParam, lParam, bHandled); break;
-	case WM_GETMINMAXINFO: lRes = OnGetMinMaxInfo(uMsg, wParam, lParam, bHandled); break;
-	case WM_SYSCOMMAND:    lRes = OnSysCommand(uMsg, wParam, lParam, bHandled); break;
-	default:
-		bHandled = FALSE;
-	}
-	if (bHandled) return lRes;
-	if (m_pm.MessageHandler(uMsg, wParam, lParam, lRes)) return lRes;
-	return CWindowWnd::HandleMessage(uMsg, wParam, lParam);
+	m_pCloseBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("closebtn")));
+	m_pMaxBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("maxbtn")));
+	m_pRestoreBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("restorebtn")));
+	m_pMinBtn = static_cast<CButtonUI*>(m_pm.FindControl(_T("minbtn")));
+}
+
+void C360SafeFrameWnd::_OnPrepare()
+{
+
 }
