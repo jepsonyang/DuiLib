@@ -14,7 +14,7 @@
     <ClCompile Include="360Safe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StdAfx.cpp">
+    <ClCompile Include="C360SafeFrameWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -22,7 +22,7 @@
     <ClInclude Include="ControlEx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StdAfx.h">
+    <ClInclude Include="C360SafeFrameWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
