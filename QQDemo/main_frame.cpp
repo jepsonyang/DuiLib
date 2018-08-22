@@ -44,8 +44,10 @@ const TCHAR* const kBackgroundControlName = _T("bg");
 const int kBackgroundSkinImageCount = 3;
 
 MainFrame::MainFrame()
-: bk_image_index_(0)
-{}
+:bk_image_index_(0)
+{
+
+}
 
 MainFrame::~MainFrame()
 {
@@ -149,7 +151,8 @@ void MainFrame::OnExit(TNotifyUI& msg)
 }
 
 void MainFrame::InitWindow()
-{}
+{
+}
 
 DWORD MainFrame::GetBkColor()
 {

@@ -7,37 +7,34 @@
 class MainFrame : public WindowImplBase
 {
 public:
-
 	MainFrame();
 	~MainFrame();
 
 public:
-
-	LPCTSTR GetWindowClassName() const;	
-	virtual void OnFinalMessage(HWND hWnd);
-	virtual void InitWindow();
-	virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam);
-	virtual CDuiString GetSkinFile();
-	virtual CDuiString GetSkinFolder();
-	virtual UILIB_RESOURCETYPE GetResourceType() const;
-	virtual CControlUI* CreateControl(LPCTSTR pstrClass);
-	virtual LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	virtual LRESULT HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	virtual LRESULT OnClose(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-	virtual LPCTSTR GetResourceID() const;
+	LPCTSTR GetWindowClassName() const override;	
+	virtual void OnFinalMessage(HWND hWnd) override;
+	virtual void InitWindow() override;
+	virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam) override;
+	virtual CDuiString GetSkinFile() override;
+	virtual CDuiString GetSkinFolder() override;
+	virtual UILIB_RESOURCETYPE GetResourceType() const override;
+	virtual CControlUI* CreateControl(LPCTSTR pstrClass) override;
+	virtual LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) override;
+	virtual LRESULT HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) override;
+	virtual LRESULT OnClose(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) override;
+	virtual LPCTSTR GetResourceID() const override;
 
     DWORD GetBkColor();
     void SetBkColor(DWORD dwBackColor);
 
-protected:	
+protected:
+	void Notify(TNotifyUI& msg) override;
 
-	void Notify(TNotifyUI& msg);
 	void OnPrepare(TNotifyUI& msg);
 	void OnExit(TNotifyUI& msg);
 	void OnTimer(TNotifyUI& msg);
 
 private:
-
 	void UpdateFriendsList();
 
 	void UpdateGroupsList();
