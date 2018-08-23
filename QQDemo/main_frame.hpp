@@ -11,21 +11,20 @@ public:
 	~MainFrame();
 
 public:
-	LPCTSTR GetWindowClassName() const override;	
-	virtual void OnFinalMessage(HWND hWnd) override;
-	virtual void InitWindow() override;
-	virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam) override;
-	virtual CDuiString GetSkinFile() override;
-	virtual CDuiString GetSkinFolder() override;
+	LPCTSTR GetWindowClassName() const override;
+	virtual CDuiString GetSkinFile() const override;
 	virtual UILIB_RESOURCETYPE GetResourceType() const override;
-	virtual CControlUI* CreateControl(LPCTSTR pstrClass) override;
-	virtual LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) override;
-	virtual LRESULT HandleCustomMessage(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) override;
-	virtual LRESULT OnClose(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) override;
 	virtual LPCTSTR GetResourceID() const override;
+	virtual CControlUI* CreateControl(LPCTSTR pstrClass) override;
 
-    DWORD GetBkColor();
-    void SetBkColor(DWORD dwBackColor);
+	DWORD GetBkColor();
+	void SetBkColor(DWORD dwBackColor);
+
+protected:
+	virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam) override;
+	
+	virtual LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) override;
+	virtual LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled) override;
 
 protected:
 	void Notify(TNotifyUI& msg) override;
@@ -36,9 +35,7 @@ protected:
 
 private:
 	void UpdateFriendsList();
-
 	void UpdateGroupsList();
-
 	void UpdateMicroBlogList();
 
 private:

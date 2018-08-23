@@ -33,8 +33,8 @@ public:
 	virtual void InitWindow();
 	virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam);
 	virtual UILIB_RESOURCETYPE GetResourceType() const;
-	virtual CDuiString GetSkinFile();
-	virtual CDuiString GetSkinFolder();
+	virtual CDuiString GetSkinFile() const;
+	virtual CDuiString GetSkinFolder() const;
 	virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 	virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
 	virtual LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

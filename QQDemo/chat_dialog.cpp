@@ -98,12 +98,12 @@ BOOL ChatDialog::Receive(SkinChangedParam param)
 	return TRUE;
 }
 
-CDuiString ChatDialog::GetSkinFile()
+CDuiString ChatDialog::GetSkinFile() const
 {
 	return _T("chatbox.xml");
 }
 
-CDuiString ChatDialog::GetSkinFolder()
+CDuiString ChatDialog::GetSkinFolder() const
 {
 	return CDuiString(CPaintManagerUI::GetInstancePath()) + _T("skin\\");
 }

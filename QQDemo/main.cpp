@@ -7,11 +7,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR /*l
     CPaintManagerUI::SetInstance(hInstance);
     CPaintManagerUI::SetResourcePath(CPaintManagerUI::GetInstancePath());
 
-	MainFrame* pFrame = new MainFrame();
-	if( pFrame == NULL ) return 0;
-	pFrame->Create(NULL, _T("QQ2011"), UI_WNDSTYLE_FRAME, WS_EX_STATICEDGE | WS_EX_APPWINDOW, 0, 0, 600, 800);
-	pFrame->CenterWindow();
-	::ShowWindow(*pFrame, SW_SHOW);
+	MainFrame frame;
+	frame.Create(NULL, _T("QQ2011"), UI_WNDSTYLE_FRAME, WS_EX_STATICEDGE | WS_EX_APPWINDOW, 0, 0, 600, 800);
+	frame.CenterWindow();
+	frame.ShowWindow();
 
 	CPaintManagerUI::MessageLoop();
 	CPaintManagerUI::Term();

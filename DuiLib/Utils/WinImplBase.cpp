@@ -10,6 +10,11 @@ namespace DuiLib
 		DUI_ON_MSGTYPE(DUI_MSGTYPE_CLICK, OnClick)
 	DUI_END_MESSAGE_MAP()
 
+	DuiLib::CDuiString WindowImplBase::GetSkinFolder() const
+	{
+		return _T("");
+	}
+
 	UILIB_RESOURCETYPE WindowImplBase::GetResourceType() const
 	{
 		return UILIB_FILE;

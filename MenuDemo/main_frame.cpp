@@ -56,14 +56,14 @@ void MainFrame::OnFinalMessage(HWND hWnd)
 	delete this;
 }
 
-CDuiString MainFrame::GetSkinFile()
+CDuiString MainFrame::GetSkinFile() const
 {
 	TCHAR szBuf[MAX_PATH] = {0};
 	_stprintf_s(szBuf, MAX_PATH - 1, _T("%d"), IDR_SKINXML);
 	return szBuf;
 }
 
-CDuiString MainFrame::GetSkinFolder()
+CDuiString MainFrame::GetSkinFolder() const
 {
 	return _T("");
 }

@@ -21,9 +21,9 @@ public:
 
 	virtual LRESULT ResponseDefaultKeyEvent(WPARAM wParam);
 
-	virtual CDuiString GetSkinFile();
+	virtual CDuiString GetSkinFile() const;
 
-	virtual CDuiString GetSkinFolder();
+	virtual CDuiString GetSkinFolder() const;
 
 	virtual CControlUI* CreateControl(LPCTSTR pstrClass);
 

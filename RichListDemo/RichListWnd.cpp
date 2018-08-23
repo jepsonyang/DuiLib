@@ -175,7 +175,7 @@ void CRichListWnd::OnFinalMessage( HWND hWnd)
 	delete this;
 }
 
-CDuiString CRichListWnd::GetSkinFolder()
+CDuiString CRichListWnd::GetSkinFolder() const
 {
 #ifdef _DEBUG
 	return _T("skin\\RichListRes\\");
@@ -185,7 +185,7 @@ CDuiString CRichListWnd::GetSkinFolder()
 	
 }
 
-CDuiString CRichListWnd::GetSkinFile()
+CDuiString CRichListWnd::GetSkinFile() const
 {
 	return _T("duilib.xml");
 }

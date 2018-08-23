@@ -129,12 +129,12 @@ void ColorSkinWindow::InitWindow()
 	MoveWindow(m_hWnd, parent_window_rect_.right - size.cx, parent_window_rect_.top, size.cx, size.cy, FALSE);
 }
 
-CDuiString ColorSkinWindow::GetSkinFile()
+CDuiString ColorSkinWindow::GetSkinFile() const
 {
 	return _T("ColorWnd.xml");
 }
 
-CDuiString ColorSkinWindow::GetSkinFolder()
+CDuiString ColorSkinWindow::GetSkinFolder() const
 {
 	return CDuiString(CPaintManagerUI::GetInstancePath()) + _T("skin\\");
 }

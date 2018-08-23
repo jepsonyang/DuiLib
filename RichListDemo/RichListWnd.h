@@ -46,8 +46,8 @@ public:
 	~CRichListWnd(void);
 
 	virtual void OnFinalMessage( HWND );
-	virtual CDuiString GetSkinFolder();
-	virtual CDuiString GetSkinFile();
+	virtual CDuiString GetSkinFolder() const;
+	virtual CDuiString GetSkinFile() const;
 	virtual LPCTSTR GetWindowClassName( void ) const;
 	virtual void Notify( TNotifyUI &msg );
 	virtual LRESULT OnMouseWheel( UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

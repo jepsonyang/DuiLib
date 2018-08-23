@@ -89,12 +89,12 @@ void CColorPicker::InitWindow()
 	MoveWindow(GetHWND(), based_point_.x - static_cast<LONG>(size.cx / 2), based_point_.y - size.cy, size.cx, size.cy, FALSE);
 }
 
-CDuiString CColorPicker::GetSkinFile()
+CDuiString CColorPicker::GetSkinFile() const
 {
 	return _T("color.xml");
 }
 
-CDuiString CColorPicker::GetSkinFolder()
+CDuiString CColorPicker::GetSkinFolder() const
 {
 	return CDuiString(CPaintManagerUI::GetInstancePath()) + _T("skin\\");
 }
