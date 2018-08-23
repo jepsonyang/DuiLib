@@ -53,6 +53,10 @@ namespace DuiLib {
 		CWindowWnd();
 		virtual ~CWindowWnd();
 
+		virtual LPCTSTR GetWindowClassName() const = 0;
+		virtual LPCTSTR GetSuperClassName() const;
+		virtual UINT GetClassStyle() const;
+
 		HWND GetHWND() const;
 		operator HWND() const;
 
@@ -73,21 +77,17 @@ namespace DuiLib {
 
 		LRESULT SendMessage(UINT uMsg, WPARAM wParam = 0, LPARAM lParam = 0L);
 		LRESULT PostMessage(UINT uMsg, WPARAM wParam = 0, LPARAM lParam = 0L);
-
+	
 	protected:
-		virtual LPCTSTR GetWindowClassName() const = 0;
-		virtual LPCTSTR GetSuperClassName() const;
-		virtual UINT GetClassStyle() const;
-
 		virtual LRESULT HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam);
-		virtual void OnFinalMessage(HWND hWnd);
-
-		static LRESULT CALLBACK _WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-		static LRESULT CALLBACK _ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		virtual void OnFinalMessage(HWND hWnd) {}
 
 	private:
 		bool _RegisterWindowClass();
 		bool _RegisterSuperclass();
+
+		static LRESULT CALLBACK _WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		static LRESULT CALLBACK _ControlProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	protected:
 		HWND		m_hWnd;

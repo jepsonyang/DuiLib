@@ -217,6 +217,16 @@ namespace DuiLib {
 
 	}
 
+	LPCTSTR CWindowWnd::GetSuperClassName() const
+	{
+		return NULL;
+	}
+
+	UINT CWindowWnd::GetClassStyle() const
+	{
+		return 0;
+	}
+
 	HWND CWindowWnd::GetHWND() const 
 	{ 
 		return m_hWnd; 
@@ -385,24 +395,46 @@ namespace DuiLib {
 		return ::PostMessage(m_hWnd, uMsg, wParam, lParam);
 	}
 
-	LPCTSTR CWindowWnd::GetSuperClassName() const
-	{
-		return NULL;
-	}
-
-	UINT CWindowWnd::GetClassStyle() const
-	{
-		return 0;
-	}
-
 	LRESULT CWindowWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		return ::CallWindowProc(m_OldWndProc, m_hWnd, uMsg, wParam, lParam);
 	}
 
-	void CWindowWnd::OnFinalMessage(HWND hWnd)
+	bool CWindowWnd::_RegisterWindowClass()
 	{
+		WNDCLASS wc;
+		::ZeroMemory(&wc, sizeof(wc));
+		wc.style = GetClassStyle();
+		wc.lpfnWndProc = CWindowWnd::_WndProc;
+		wc.hInstance = CPaintManagerUI::GetInstance();
+		wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
+		wc.lpszClassName = GetWindowClassName();
+		ATOM ret = ::RegisterClass(&wc);
+		ASSERT(ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);
+		return (ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);
+	}
 
+	bool CWindowWnd::_RegisterSuperclass()
+	{
+		// Get the class information from an existing window so we can subclass it later on...
+		WNDCLASSEX wc;
+		::ZeroMemory(&wc, sizeof(wc));
+		wc.cbSize = sizeof(WNDCLASSEX);
+		if (!::GetClassInfoEx(NULL, GetSuperClassName(), &wc))
+		{
+			if (!::GetClassInfoEx(CPaintManagerUI::GetInstance(), GetSuperClassName(), &wc))
+			{
+				ASSERT(!"Unable to locate window class");
+				return false;
+			}
+		}
+		m_OldWndProc = wc.lpfnWndProc;
+		wc.lpfnWndProc = CWindowWnd::_ControlProc;
+		wc.hInstance = CPaintManagerUI::GetInstance();
+		wc.lpszClassName = GetWindowClassName();
+		ATOM ret = ::RegisterClassEx(&wc);
+		ASSERT(ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);
+		return (ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);
 	}
 
 	LRESULT CALLBACK CWindowWnd::_WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -472,42 +504,4 @@ namespace DuiLib {
 			return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
 		}
 	}
-
-	bool CWindowWnd::_RegisterWindowClass()
-	{
-		WNDCLASS wc;
-		::ZeroMemory(&wc, sizeof(wc));
-		wc.style = GetClassStyle();
-		wc.lpfnWndProc = CWindowWnd::_WndProc;
-		wc.hInstance = CPaintManagerUI::GetInstance();
-		wc.hCursor = ::LoadCursor(NULL, IDC_ARROW);
-		wc.lpszClassName = GetWindowClassName();
-		ATOM ret = ::RegisterClass(&wc);
-		ASSERT(ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);
-		return (ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);
-	}
-
-	bool CWindowWnd::_RegisterSuperclass()
-	{
-		// Get the class information from an existing window so we can subclass it later on...
-		WNDCLASSEX wc;
-		::ZeroMemory(&wc, sizeof(wc));
-		wc.cbSize = sizeof(WNDCLASSEX);
-		if (!::GetClassInfoEx(NULL, GetSuperClassName(), &wc))
-		{
-			if (!::GetClassInfoEx(CPaintManagerUI::GetInstance(), GetSuperClassName(), &wc))
-			{
-				ASSERT(!"Unable to locate window class");
-				return false;
-			}
-		}
-		m_OldWndProc = wc.lpfnWndProc;
-		wc.lpfnWndProc = CWindowWnd::_ControlProc;
-		wc.hInstance = CPaintManagerUI::GetInstance();
-		wc.lpszClassName = GetWindowClassName();
-		ATOM ret = ::RegisterClassEx(&wc);
-		ASSERT(ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);
-		return (ret != NULL || ::GetLastError() == ERROR_CLASS_ALREADY_EXISTS);
-	}
-
 } // namespace DuiLib
