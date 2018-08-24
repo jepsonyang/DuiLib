@@ -25,17 +25,17 @@ public:
 
 	~CFriendsUI();
 
-	bool Add(CControlUI* pControl);
+	bool Add(CControlUI* pControl) override;
 
-	bool AddAt(CControlUI* pControl, int iIndex);
+	bool AddAt(CControlUI* pControl, int iIndex) override;
 
-	bool Remove(CControlUI* pControl, bool bDoNotDestroy=false);
+	bool Remove(CControlUI* pControl, bool bDoNotDestroy=false) override;
 
-	bool RemoveAt(int iIndex, bool bDoNotDestroy);
+	bool RemoveAt(int iIndex, bool bDoNotDestroy) override;
 
-	void RemoveAll();
+	void RemoveAll() override;
 
-	void DoEvent(TEventUI& event);
+	void DoEvent(TEventUI& event) override;
 
 	Node* GetRoot();
 
