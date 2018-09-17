@@ -23,8 +23,8 @@ namespace DuiLib
 		WindowImplBase() {}
 		virtual ~WindowImplBase() {}
 
-		virtual CDuiString GetSkinFolder() const;
-		virtual CDuiString GetSkinFile() const = 0;
+		virtual CDuiString GetSkinFolder();
+		virtual CDuiString GetSkinFile() = 0;
 
 		virtual UILIB_RESOURCETYPE GetResourceType() const;
 		virtual CDuiString GetZIPFileName() const;

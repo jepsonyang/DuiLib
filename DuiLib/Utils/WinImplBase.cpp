@@ -10,7 +10,7 @@ namespace DuiLib
 		DUI_ON_MSGTYPE(DUI_MSGTYPE_CLICK, OnClick)
 	DUI_END_MESSAGE_MAP()
 
-	DuiLib::CDuiString WindowImplBase::GetSkinFolder() const
+	DuiLib::CDuiString WindowImplBase::GetSkinFolder()
 	{
 		return _T("");
 	}
