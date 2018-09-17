@@ -5,8 +5,9 @@
 	file   			图片文件路径(如果是磁盘上的图片文件，设置此属性;和res+restype互斥);  eg: file='a.jpg'
 	res+restype		如果是从程序的资源文件加载图片，设置此属性，于file属性互斥; eg: res='' restype='0'
 	
-	source			要绘制的源图片区域; eg: source='0,0,0,0'
+	source			要绘制的源图片区域; eg: source='0,0,0,0'			
 	dest			在目标窗口上绘制的区域;	eg: dest='0,0,0,0'
+					注意: 4个值的含义，如: source='a,b,e,f', 矩形左上角坐标为(a,b),右下角坐标为(e,f),即e和f不是指宽度和高度
 	
 	corner			绘制时，默认宽高都拉伸;若指定了corner，将会按照9宫格方式拉伸;
 					如corner='a,b,c,d'，表示左上角宽a，高b的区域不拉伸,右下角宽c，高d的区域不拉伸;
