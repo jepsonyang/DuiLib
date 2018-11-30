@@ -18,6 +18,20 @@
 
 	xtiled			是否水平平铺;	eg: xtiled='false'
 	ytiled			是否垂直平铺;	eg: ytiled='false'
+	
+(2) 属性padding和inset:
+	padding是指外边距;
+	inset是指外边距;
+	参数顺序为(左,上,右,下);
+	4参数中，后面的参数可以省略，省略掉的为0; padding="3"等效于padding="3,0,0,0";
+	
+	注: web中padding是内边距;各参数顺序也不是这样的;
+	
+(3) 浮动:
+	float="true"情况下，pos属性才有效;
+	pos="左上角x，左上角y，右下角x，右下角y";
+	使用浮动时，控件布局位置写死，要维护比较困难，所以，不推荐使用;
+
 -->
 <Controls>
 	<Window parent="">
