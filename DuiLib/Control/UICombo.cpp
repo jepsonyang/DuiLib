@@ -118,7 +118,7 @@ bool CComboBodyUI::DoPaint(HDC hDC, const RECT& rcPaint, CControlUI* pStopContro
 //
 //
 
-class CComboWnd : public CWindowWnd
+class CComboWnd : public CWindowWnd, public INotifyUI
 {
 public:
     void Init(CComboUI* pOwner);
@@ -129,6 +129,8 @@ public:
 
     void EnsureVisible(int iIndex);
     void Scroll(int dx, int dy);
+
+	virtual void Notify(TNotifyUI& msg) override;
 
 #if(_WIN32_WINNT >= 0x0501)
 	virtual UINT GetClassStyle() const;
@@ -230,6 +232,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
             m_pLayout->Add(static_cast<CControlUI*>(m_pOwner->GetItemAt(i)));
         }
         m_pm.AttachDialog(m_pLayout);
+		m_pm.AddNotifier(this);
         
         return 0;
     }
@@ -274,7 +277,7 @@ LRESULT CComboWnd::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
             event.Type = UIEVENT_KEYDOWN;
             event.chKey = (TCHAR)wParam;
             m_pOwner->DoEvent(event);
-            EnsureVisible(m_pOwner->GetCurSel());
+            if (wParam != 17) EnsureVisible(m_pOwner->GetCurSel());
             return 0;
         }
     }
@@ -334,6 +337,14 @@ void CComboWnd::Scroll(int dx, int dy)
     if( dx == 0 && dy == 0 ) return;
     SIZE sz = m_pLayout->GetScrollPos();
     m_pLayout->SetScrollPos(CDuiSize(sz.cx + dx, sz.cy + dy));
+}
+
+void CComboWnd::Notify(TNotifyUI& msg)
+{
+	if (msg.sType == _T("windowinit"))
+	{
+		EnsureVisible(m_iOldSel);
+	}
 }
 
 #if(_WIN32_WINNT >= 0x0501)
